@@ -1,0 +1,82 @@
+### Router 1 (R1)
+conf t
+hostname R1
+interface Tunnel25
+ ip address 10.10.10.1 255.255.255.0
+ tunnel source Fa0/0  # Change based on your topology
+ tunnel destination 172.16.222.x
+exit
+router eigrp 100
+ network 172.16.222.0 0.0.0.255
+ network 10.10.10.0 0.0.0.255
+ no auto-summary
+exit
+interface Serial0/0/0
+ ip address 172.16.222.x 255.255.255.252
+ clock rate 64000  # Only on DCE side
+ no shutdown
+exit
+exit
+
+### Router 2 (R2)
+conf t
+hostname R2
+interface Tunnel25
+ ip address 10.10.10.2 255.255.255.0
+ tunnel source Fa0/0
+ tunnel destination 172.16.222.x
+exit
+router eigrp 100
+ network 172.16.222.0 0.0.0.255
+ network 10.10.10.0 0.0.0.255
+ no auto-summary
+exit
+interface Serial0/0/0
+ ip address 172.16.222.x 255.255.255.252
+ no shutdown
+exit
+exit
+
+### Router 3 (R3)
+conf t
+hostname R3
+interface Tunnel25
+ ip address 10.10.10.3 255.255.255.0
+ tunnel source Fa0/0
+ tunnel destination 172.16.222.x
+exit
+router eigrp 100
+ network 172.16.222.0 0.0.0.255
+ network 10.10.10.0 0.0.0.255
+ no auto-summary
+exit
+interface Serial0/0/0
+ ip address 172.16.222.x 255.255.255.252
+ clock rate 64000
+ no shutdown
+exit
+exit
+
+### Router 4 (R4)
+conf t
+hostname R4
+interface Tunnel25
+ ip address 10.10.10.4 255.255.255.0
+ tunnel source Fa0/0
+ tunnel destination 172.16.222.x
+exit
+router eigrp 100
+ network 172.16.222.0 0.0.0.255
+ network 10.10.10.0 0.0.0.255
+ no auto-summary
+exit
+interface Serial0/0/0
+ ip address 172.16.222.x 255.255.255.252
+ no shutdown
+exit
+exit
+
+### Verification Commands
+show ip interface brief
+show ip route
+show ip eigrp neighbors
